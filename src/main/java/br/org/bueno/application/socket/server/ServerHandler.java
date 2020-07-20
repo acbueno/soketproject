@@ -12,17 +12,23 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import br.org.bueno.application.socket.entity.User;
+import br.org.bueno.application.socket.util.Crc8Util;
+import br.org.bueno.application.socket.util.CrcUtil;
 import br.org.bueno.application.socket.util.HibernateUtil;
 import br.org.bueno.application.socket.util.ToolUtils;
 
 public class ServerHandler extends IoHandlerAdapter {
 
 	private ToolUtils toolUtils = ToolUtils.getInstance();
+	Crc8Util crc8Util = Crc8Util.getInstance();
 
 	public void messageReceived(IoSession session, Object message) throws IOException {
 		String str = message.toString();
 
 		System.out.println("Message received Server " + str);
+		crc8Util.reset();
+		crc8Util.update(str.getBytes());
+		toolUtils.logger.info("CRC8 is " +  crc8Util.getValue());
 		if (saveData(str)) {
 			Date date = new Date();
 			String dateToHex = ToolUtils.toHexadecimal(date.toString());
@@ -38,7 +44,6 @@ public class ServerHandler extends IoHandlerAdapter {
 
 	private boolean saveData(String str) throws UnsupportedEncodingException {
 		String[] messgeSplit = str.split(",");
-
 		String name = toolUtils.toHexadecimal(messgeSplit[0]);
 		String age = toolUtils.getInstance().toHexadecimal(messgeSplit[1]);
 		String weight = toolUtils.getInstance().toHexadecimal(messgeSplit[2]);

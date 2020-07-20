@@ -1,4 +1,4 @@
-package br.org.bueno.application.socket;
+package br.org.bueno.application.socket.util;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import br.org.bueno.application.socket.entity.User;
-import br.org.bueno.application.socket.util.HibernateUtil;
 
 public class H2Test {
 
