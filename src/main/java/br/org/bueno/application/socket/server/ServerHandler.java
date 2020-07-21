@@ -56,23 +56,13 @@ public class ServerHandler extends IoHandlerAdapter {
 		User user = new User(name, Integer.valueOf(age), Integer.valueOf(weight), Integer.valueOf(height),
 				Integer.valueOf(nameOfLength));
 
-		Transaction transaction = null;
-
-		try (Session sessionHibernate = HibernateUtil.getSessionFactory().getCurrentSession()) {
-
-			transaction = sessionHibernate.beginTransaction();
-			sessionHibernate.save(user);
-
-			transaction.commit();
+		try {
+			HibernateUtil.saveUser(user);
 			return true;
 		} catch (Exception e) {
-			if (transaction == null) {
-				transaction.rollback();
-				System.out.println("Foi efetuado roolback");
-			}
-			e.printStackTrace();
 			return false;
 		}
+
 	}
 
 }

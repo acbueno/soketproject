@@ -6,8 +6,12 @@ import java.io.UnsupportedEncodingException;
 
 import javax.persistence.Temporal;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.Test;
 
+import br.org.bueno.application.socket.entity.User;
+import br.org.bueno.application.socket.util.HibernateUtil;
 import br.org.bueno.application.socket.util.ToolUtils;
 
 
@@ -24,6 +28,7 @@ public class AppTest  {
 	private static ToolUtils toolUtils = ToolUtils.getInstance();
 
 
+
     @Test
 	public void testStringToHext() throws UnsupportedEncodingException {
 		String hexString = "72616D626F";
@@ -36,5 +41,12 @@ public class AppTest  {
 		String hexToConvertString = toolUtils.hexToString("72616D626F");
 		assertEquals(name, hexToConvertString);
 	}
+
+    @Test
+    public void saveUser() {
+    	User user =  new User("Rambo", 25, 100, 20, 10);
+    	HibernateUtil.saveUser(user);
+    	HibernateUtil.isSaveOK();
+    }
 
 }
